@@ -1,0 +1,12 @@
+{
+  "name": "labs2.0",
+  "version": "1.0.0",
+  "description": "Library for labs 2.0",
+  "main": "iterator-lab/index.js",
+  "type": "commonjs",
+  "scripts": {
+    "demo": "node usage-example/demoRun.js"
+  },
+  "author": "Zhenya812",
+  "license": "MIT"
+}

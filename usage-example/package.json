@@ -1,0 +1,15 @@
+{
+  "name": "usage-example",
+  "version": "1.0.0",
+  "description": "Example project for using the generator and timeout iterator library.",
+  "main": "demoRun.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node demoRun.js"
+  },
+  "dependencies": {
+    "labs2.0": "file:.."
+  },
+  "author": "Zhenya812",
+  "license": "MIT"
+}
