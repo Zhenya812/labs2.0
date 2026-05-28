@@ -5,10 +5,24 @@ function createKey(args) {
 function memoize(fn, options = {}) {
     const {
         maxSize = Infinity,
-        policy = "LRU"
+        policy = "LRU",
+        ttl = null,
+        customEvict = null
     } = options;
 
     const cache = new Map();
+
+    function removeExpiredItems() {
+        if (ttl === null) return;
+
+        const now = Date.now();
+
+        for (const [key, item] of cache.entries()) {
+            if (now - item.createdAt > ttl) {
+                cache.delete(key);
+            }
+        }
+    }
 
     function evictIfNeeded() {
         if (cache.size <= maxSize) return;
@@ -33,6 +47,8 @@ function memoize(fn, options = {}) {
                     keyToDelete = key;
                 }
             }
+        } else if (policy === "CUSTOM" && typeof customEvict === "function") {
+            keyToDelete = customEvict(cache);
         } else {
             keyToDelete = cache.keys().next().value;
         }
@@ -43,6 +59,8 @@ function memoize(fn, options = {}) {
     }
 
     return function (...args) {
+        removeExpiredItems();
+
         const key = createKey(args);
         const now = Date.now();
 
@@ -60,6 +78,7 @@ function memoize(fn, options = {}) {
 
         cache.set(key, {
             value: result,
+            createdAt: now,
             lastUsed: now,
             usageCount: 1
         });
