@@ -59,3 +59,64 @@ function asyncMapPromise(array, asyncCallback, signal) {
             .catch(reject);
     });
 }
+
+console.log("Callback-based async map");
+
+const numbers1 = [1, 2, 3, 4];
+
+asyncMapCallback(
+    numbers1,
+    (number, index, callback) => {
+        setTimeout(() => {
+            callback(null, number * 2);
+        }, 500);
+    },
+    (error, result) => {
+        if (error) {
+            console.log("Помилка:", error.message);
+            return;
+        }
+
+        console.log("Результат callback-версії:", result);
+    }
+);
+
+console.log("Promise-based async map");
+
+const numbers2 = [5, 6, 7, 8];
+
+asyncMapPromise(numbers2, (number) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve(number * 3);
+        }, 500);
+    });
+})
+    .then((result) => {
+        console.log("Результат Promise-версії:", result);
+    })
+    .catch((error) => {
+        console.log("Помилка:", error.message);
+    });
+
+async function runAsyncAwaitExample() {
+    console.log("Async/Await example");
+
+    try {
+        const numbers3 = [10, 20, 30];
+
+        const result = await asyncMapPromise(numbers3, async (number) => {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve(number + 100);
+                }, 500);
+            });
+        });
+
+        console.log("Результат async/await:", result);
+    } catch (error) {
+        console.log("Помилка:", error.message);
+    }
+}
+
+runAsyncAwaitExample();
