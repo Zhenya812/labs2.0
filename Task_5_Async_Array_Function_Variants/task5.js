@@ -120,3 +120,41 @@ async function runAsyncAwaitExample() {
 }
 
 runAsyncAwaitExample();
+
+async function runAbortExample() {
+    console.log("AbortController example");
+
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    setTimeout(() => {
+        controller.abort();
+    }, 700);
+
+    try {
+        const numbers4 = [1, 2, 3, 4, 5];
+
+        const result = await asyncMapPromise(
+            numbers4,
+            (number, index, signal) => {
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        if (signal && signal.aborted) {
+                            reject(new Error("Операцію скасовано"));
+                            return;
+                        }
+
+                        resolve(number * 10);
+                    }, 1000);
+                });
+            },
+            signal
+        );
+
+        console.log("Результат після скасування:", result);
+    } catch (error) {
+        console.log("Помилка:", error.message);
+    }
+}
+
+runAbortExample();
