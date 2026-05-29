@@ -60,3 +60,32 @@ class BiDirectionalPriorityQueue {
 
         return selectedIndex;
     }
+
+    size() {
+        return this.items.length;
+    }
+
+    isEmpty() {
+        return this.items.length === 0;
+    }
+}
+
+const queue = new BiDirectionalPriorityQueue();
+
+queue.enqueue("Оновлення профілю", 3);
+queue.enqueue("Критична помилка", 7);
+queue.enqueue("Рекламне повідомлення", 2);
+queue.enqueue("Запит користувача", 5);
+
+console.log("Найвищий пріоритет:", queue.peek("highest"));
+console.log("Найнижчий пріоритет:", queue.peek("lowest"));
+console.log("Найстаріший елемент:", queue.peek("oldest"));
+console.log("Найновіший елемент:", queue.peek("newest"));
+
+console.log("Видалено елемент з найвищим пріоритетом:", queue.dequeue("highest"));
+console.log("Видалено елемент з найнижчим пріоритетом:", queue.dequeue("lowest"));
+console.log("Видалено найстаріший елемент:", queue.dequeue("oldest"));
+console.log("Видалено найновіший елемент:", queue.dequeue("newest"));
+
+console.log("Розмір черги:", queue.size());
+console.log("Чи черга порожня:", queue.isEmpty());
