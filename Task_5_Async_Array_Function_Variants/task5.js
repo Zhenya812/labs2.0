@@ -33,3 +33,29 @@ function asyncMapCallback(array, asyncCallback, finalCallback, signal) {
         });
     }
 }
+
+function asyncMapPromise(array, asyncCallback, signal) {
+    return new Promise((resolve, reject) => {
+        if (signal && signal.aborted) {
+            reject(new Error("Операцію скасовано"));
+            return;
+        }
+
+        const promises = array.map((item, index) => {
+            return new Promise((resolveItem, rejectItem) => {
+                if (signal && signal.aborted) {
+                    rejectItem(new Error("Операцію скасовано"));
+                    return;
+                }
+
+                asyncCallback(item, index, signal)
+                    .then(resolveItem)
+                    .catch(rejectItem);
+            });
+        });
+
+        Promise.all(promises)
+            .then(resolve)
+            .catch(reject);
+    });
+}
