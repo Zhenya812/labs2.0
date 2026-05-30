@@ -43,3 +43,32 @@ messageBus.sendMessage("user:login", {
     userId: 1,
     username: "Степан"
 });
+
+
+console.log("Відписуємо сервіс сповіщень:");
+
+unsubscribeNotifications();
+
+
+console.log("Друга подія входу користувача:");
+
+messageBus.sendMessage("user:login", {
+    userId: 2,
+    username: "Акакій"
+});
+
+console.log("Окрема подія замовлення:");
+
+messageBus.subscribe("order:created", (order) => {
+    console.log("Замовлення створено:", order);
+});
+
+messageBus.subscribe("order:created", (order) => {
+    console.log("Система доставки отримала замовлення:", order.id);
+});
+
+messageBus.sendMessage("order:created", {
+    id: 101,
+    product: "Ноутбук",
+    price: 25000
+});
