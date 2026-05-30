@@ -117,3 +117,82 @@ function log(level = LogLevel.INFO, options = {}) {
         };
     };
 }
+
+function add(a, b) {
+    return a + b;
+}
+
+const loggedAdd = log(LogLevel.INFO)(add);
+
+console.log("Результат додавання:", loggedAdd(5, 3));
+
+function divide(a, b) {
+    if (b === 0) {
+        throw new Error("Ділення на нуль неможливе");
+    }
+
+    return a / b;
+}
+
+const loggedDivide = log(LogLevel.ERROR)(divide);
+
+try {
+    console.log("Результат ділення:", loggedDivide(10, 0));
+} catch (error) {
+    console.log("Помилка оброблена:", error.message);
+}
+
+async function fetchUser(id) {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                id: id,
+                name: "Акакій"
+            });
+        }, 500);
+    });
+}
+
+const loggedFetchUser = log(LogLevel.DEBUG)(fetchUser);
+
+loggedFetchUser(1).then((user) => {
+    console.log("Отриманий користувач:", user);
+});
+
+function multiply(a, b) {
+    return a * b;
+}
+
+const loggedMultiply = log(LogLevel.INFO, {
+    output: "file"
+})(multiply);
+
+console.log("Результат множення:", loggedMultiply(4, 6));
+
+function subtract(a, b) {
+    return a - b;
+}
+
+const loggedSubtract = log(LogLevel.INFO, {
+    formatter: jsonFormatter
+})(subtract);
+
+console.log("Результат віднімання:", loggedSubtract(10, 4));
+
+function checkAge(age) {
+    if (age < 18) {
+        throw new Error("Користувач занадто молодий");
+    }
+
+    return "Доступ дозволено";
+}
+
+const loggedCheckAge = log(LogLevel.INFO, {
+    onlyErrors: true
+})(checkAge);
+
+try {
+    console.log(loggedCheckAge(16));
+} catch (error) {
+    console.log("Помилка доступу:", error.message);
+}
