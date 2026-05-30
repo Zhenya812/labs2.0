@@ -31,3 +31,27 @@ class AuthProxy {
         return fakeApiRequest(url, modifiedOptions);
     }
 }
+
+class ApiKeyAuth {
+    constructor(apiKey) {
+        this.apiKey = apiKey;
+    }
+
+    getAuthHeaders() {
+        return {
+            "X-API-Key": this.apiKey
+        };
+    }
+}
+
+class JwtAuth {
+    constructor(token) {
+        this.token = token;
+    }
+
+    getAuthHeaders() {
+        return {
+            "Authorization": `Bearer ${this.token}`
+        };
+    }
+}
