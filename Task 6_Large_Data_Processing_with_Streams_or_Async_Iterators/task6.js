@@ -34,3 +34,15 @@ async function processLargeFile(filePath) {
     console.log("Кількість слів:", wordCount);
     console.log("Кількість символів:", characterCount);
 }
+
+const demoData = `
+Користувач відкрив сторінку сайту.
+Система отримала новий запит від користувача.
+Сервер обробив дані та сформував відповідь.
+Потокова обробка дозволяє читати файл частинами.
+Такий підхід не завантажує весь набір даних у памʼять.
+`;
+
+fs.writeFileSync("large-data.txt", demoData.trim(), "utf8");
+
+processLargeFile("large-data.txt");
